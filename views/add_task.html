@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="mb-3">➕ Добавяне на нова задача</h1>
+
+<form action="/add" method="post" class="mb-4">
+  <div class="row g-2 align-items-end">
+
+    <div class="col-md-3">
+      <input type="text" name="name" class="form-control" placeholder="Име на задачата" required>
+    </div>
+
+    <div class="col-md-2">
+      <input type="number" name="priority" class="form-control" placeholder="Приоритет" min="1" max="5" required>
+    </div>
+
+    <div class="col-md-3">
+      <input type="date" name="due_date" class="form-control" required>
+    </div>
+
+    <div class="col-md-2">
+      <select name="category" id="category" class="form-control" onchange="toggleCustomCategory()" required>
+        <option value="Работа">Работа</option>
+        <option value="Учене">Учене</option>
+        <option value="Лично">Лично</option>
+        <option value="Дом">Дом</option>
+        <option value="Хоби">Хоби</option>
+        <option value="Здраве">Здраве</option>
+        <option value="Друго">Друго</option>
+      </select>
+    </div>
+
+    <div class="col-md-2" id="customCategoryContainer" style="display:none;">
+      <input type="text" name="custom_category" id="custom_category" class="form-control" placeholder="Въведи категория">
+    </div>
+
+    <div class="col-md-2 d-grid">
+      <button type="submit" class="btn btn-success">Добави</button>
+    </div>
+  </div>
+</form>
+
+<script>
+function toggleCustomCategory() {
+  const select = document.getElementById("category");
+  const customContainer = document.getElementById("customCategoryContainer");
+  const customInput = document.getElementById("custom_category");
+
+  if (select.value === "Друго") {
+    customContainer.style.display = "block";
+    customInput.required = true;
+  } else {
+    customContainer.style.display = "none";
+    customInput.required = false;
+  }
+}
+</script>
+
+<h2 class="mt-4 mb-3">📋 Всички задачи</h2>
+
+<table class="table table-hover align-middle">
+  <thead class="table-light">
+    <tr>
+      <th>Име</th>
+      <th>Приоритет</th>
+      <th>Краен срок</th>
+      <th>Статус</th>
+      <th>Категория</th>
+      <th>Действия</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in tasks %}
+    <tr>
+      <form action="/edit/{{ task.id }}" method="post" class="d-flex">
+        <td><input type="text" name="name" value="{{ task.name }}" class="form-control form-control-sm"></td>
+        <td><input type="number" name="priority" value="{{ task.priority }}" class="form-control form-control-sm"></td>
+        <td><input type="date" name="due_date" value="{{ task.due_date }}" class="form-control form-control-sm"></td>
+        <td><input type="text" name="status" value="{{ task.status }}" class="form-control form-control-sm"></td>
+        <td><input type="text" name="category" value="{{ task.category }}" class="form-control form-control-sm"></td>
+        <td class="d-flex gap-1">
+          <button type="submit" class="btn btn-outline-success btn-sm">💾</button>
+      </form>
+      <form action="/delete/{{ task.id }}" method="post">
+        <button type="submit" class="btn btn-outline-danger btn-sm">🗑️</button>
+      </form>
+      <form action="/complete/{{ task.id }}" method="post">
+        <button type="submit" class="btn btn-outline-primary btn-sm">✅</button>
+      </form>
+        </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="6" class="text-center text-muted">Няма задачи.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

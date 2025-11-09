@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="mb-4">📊 Оптимален график</h1>
+
+{% if ai_advice %}
+<div class="alert alert-info mt-4">
+  <strong>🤖 Интелигентен съвет:</strong> {{ ai_advice }}
+</div>
+{% endif %}
+
+<div class="mb-4">
+  <h5>Прогрес на изпълнение: {{ progress_percent }}%</h5>
+  <div class="progress" style="height: 24px;">
+    <div class="progress-bar bg-success" role="progressbar"
+         style="width: {{ progress_percent }}%;" aria-valuenow="{{ progress_percent }}" aria-valuemin="0" aria-valuemax="100">
+      {{ progress_percent }}%
+    </div>
+  </div>
+</div>
+
+<table class="table table-hover align-middle rounded-table">
+  <thead class="custom-header">
+    <tr>
+      <th>Име</th>
+      <th>Категория</th>
+      <th>Приоритет</th>
+      <th>Краен срок</th>
+      <th>Статус</th>
+      <th>Действие</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in tasks %}
+    <tr>
+      <td>{{ task.name }}</td>
+      <td>{{ task.category }}</td>
+      <td>{{ task.priority }}</td>
+      <td>{{ task.due_date }}</td>
+      <td>
+        <span class="badge
+          {% if task.status == 'Нова' %}bg-primary
+          {% elif task.status == 'Стара' %}bg-secondary
+          {% elif task.status == 'Завършена' %}bg-success
+          {% endif %}">
+          {{ task.status }}
+        </span>
+      </td>
+      <td>
+        {% if task.status != 'Завършена' %}
+        <form action="/complete/{{ task.id }}" method="post">
+          <button type="submit" class="btn btn-outline-success btn-sm">✅ Завършена</button>
+        </form>
+        {% else %}
+        <span class="text-success">✔</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" class="text-center text-muted">Няма задачи.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<a href="/" class="btn btn-primary mt-3">⬅ Назад</a>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">💡 Вдъхновение за днес</h1>
+
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card p-4 shadow-sm border-0 bg-light">
+      <h4>💬 Цитат на деня</h4>
+      <blockquote class="blockquote mt-3">
+        <p>„{{ quote }}“</p>
+        <footer class="blockquote-footer">{{ author }}</footer>
+      </blockquote>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card p-4 shadow-sm border-0 bg-info bg-opacity-10">
+      <h4>🤖 Интелигентен съвет</h4>
+      <p class="mt-3 fs-5">{{ tip }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="text-center mt-4">
+  <a href="/inspiration" class="btn btn-outline-success">🔁 Обнови вдъхновението</a>
+  <a href="/" class="btn btn-outline-primary ms-2">⬅ Назад</a>
+</div>
+{% endblock %}

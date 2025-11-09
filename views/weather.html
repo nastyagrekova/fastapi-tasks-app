@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4 text-center">🌦 Прогноза за времето</h1>
+
+<div class="intro-card card p-4 shadow-sm border-0 mx-auto mb-4 bg-white rounded-4" style="max-width: 800px;">
+  <p class="fs-5 fw-semibold text-center text-secondary mb-2">
+    Времето за Вас — планирайте деня си с увереност!
+  </p>
+  <p class="text-muted text-center">
+    Проверете актуалната прогноза за вашия град и организирайте задачите си според условията навън.
+    Бъдете подготвени за всичко и използвайте времето ефективно!
+  </p>
+</div>
+
+<form method="get" action="/weather" class="mb-5 text-center">
+  <div class="input-group mx-auto" style="max-width: 500px;">
+    <input type="text" name="city" class="form-control form-control-lg shadow-sm" placeholder="Въведи град (например Sofia)" required>
+    <button type="submit" class="btn btn-primary btn-lg px-4">Покажи</button>
+  </div>
+</form>
+
+{% if weather %}
+  <div class="weather-result card p-4 shadow-lg border-0 mx-auto bg-light rounded-4 text-center" style="max-width: 600px;">
+    <h4 class="mb-3 text-info">🌍 {{ weather.city }}</h4>
+    <p class="fs-4 fw-bold mb-1">Температура: {{ weather.temp }}°C</p>
+    <p class="mb-1">Усеща се като: <strong>{{ weather.feels_like }}°C</strong></p>
+    <p class="text-muted fst-italic">{{ weather.description }}</p>
+  </div>
+{% endif %}
+{% endblock %}
